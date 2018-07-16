@@ -9,7 +9,7 @@ The grid (a 4x4 matrix) is transposed and reversed (where applicable) such that 
 ## Neural Networks
 This was originally built to train a neural network.  This master branch contains the network-free code.
 A neural network would take the board-state as an input (the 4x4 matrix), and any of the four actions as an output.
-The fitness level (if using genetic algorithsm) could use the total score on the board.  
+The fitness level (if using genetic algorithms) could use the total score on the board.  
 
 ## Future Builds 
 I will commit future builds that incorporate an LSTM with the NEAT algorithm.
