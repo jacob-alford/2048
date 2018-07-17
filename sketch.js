@@ -5,6 +5,8 @@ let colorResolve;
 let gameOverState = [];
 let gameboardDimensions = 800; //The size of the full board
 let tileDimensions = gameboardDimensions/4; //The size of an individual tile
+let textDisplay;
+let gridDisplay;
 
 //randomly chooses either a two or a four based on the above odds.
 function twoOrFour(){
@@ -203,6 +205,12 @@ function gameboard(){
 				if(this.grid[3][x].value == this.grid[3][x+1].value){
 					return true;
 				}
+				if(this.grid[2][x].value == this.grid[3][x].value){
+					return true;
+				}
+				if(this.grid[0][x].value == this.grid[1][x].value){
+					return true;
+				}
 			}
 			let tempGameOverState = [];
 			for(let p=0;p<4;p++){
@@ -237,6 +245,22 @@ function gameboard(){
 			setTimeout(()=>this.generate(),100);
 		}
 	}
+	this.totalScore = () => {
+		let output = 0;
+		for(let lm=0;lm<4;lm++){
+			for(let ao=0;ao<4;ao++){
+				output += this.grid[lm][ao].value;
+			}
+		}
+		return output;
+	}
+	this.clear = () => {
+		for(let lm=0;lm<4;lm++){
+			for(let ao=0;ao<4;ao++){
+				this.grid[lm][ao].clear();
+			}
+		}
+	}
 }
 
 //The tiles that are instanciated in the above gameboard constructor's this.grid.
@@ -253,6 +277,12 @@ function tile(init){
 
 //p5 setup function
 function setup() {
+	textDisplay = createP();
+	textDisplay.style('text-align','center');
+	textDisplay.style('font-size',"3em");
+	textDisplay.style('font-family','Lucida Console');
+	textDisplay.style('left','50%');
+
 	//The colors of different valued tiles
 	colorResolve = {
 		"2":color(185,156,107),
@@ -272,8 +302,19 @@ function setup() {
 		"32768":color(64,193,241),
 		"65536":color(30,91,113)
 	};
-	createCanvas(gameboardDimensions, gameboardDimensions);
+	gridDisplay = createCanvas(gameboardDimensions, gameboardDimensions);
 	newGame = new gameboard();
+	gridDisplay.style('margin-left',(windowWidth - gameboardDimensions)/2 + 'px');
+	let resetButton = createButton("Reset");
+	resetButton.mousePressed( () => {
+		newGame.clear();
+		newGame.generate();
+		loop();
+	});
+	resetButton.position(gameboardDimensions/3,.5*windowHeight + gameboardDimensions/3);
+	resetButton.style('left','25%');
+	resetButton.style('top','85%');
+
 }
 
 //[p5] Execute the relevant action given keyboard input
@@ -292,6 +333,9 @@ function keyPressed(){
 
 //[p5] Redraw the canvas
 function draw() {
+	gridDisplay.style('margin-left',(windowWidth - gameboardDimensions)/2 + 'px');
+
+	textDisplay.html(`Total Score: ${newGame.totalScore()}`)
 	if(newGame.hasMoves()){
 		stroke(0);
 		textAlign(CENTER,CENTER);
@@ -342,4 +386,5 @@ function draw() {
 		text("Game over!", gameboardDimensions/2, gameboardDimensions/2);
 		noLoop();
 	}
+
 }
