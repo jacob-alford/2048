@@ -1,6 +1,9 @@
 # 2048
 A simple game of 2048.
 
+## Pretty Branch
+Requires p5.dom.  Adds a reset button, a score counter, and centers everything.
+
 ## Architecture
 Builds a "grid" of "tiles."  Each tile has a value and some respective actions.  
 On an action: up, down, left, and right; the gameboard shifts the columns, merges the appropriate tiles, and shifts the columns again.
